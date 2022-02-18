@@ -1,1 +1,3 @@
-echo "# argo" >> README.md
+# argo
+
+🐙 GitOps for Homelab Kubernetes Cluster
