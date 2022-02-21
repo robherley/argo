@@ -23,7 +23,6 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  sourceRepos:
   destinations:
   - namespace: "*"
     server: https://kubernetes.default.svc
