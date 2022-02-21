@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+NS="argocd"
+REPO="https://github.com/robherley/argo.git"
+
+set -o pipefail
+
+log() { echo -e "\033[0;36m$@\033[0m"; }
+
+deps=(
+  "kubectl"
+  "argocd"
+)
+
+for dep in ${deps[@]};
+do
+  if ! command -v $dep &> /dev/null
+  then
+    log "'$dep' is required to run this script"
+    exit 1
+  fi
+done
+
+context=$(kubectl config current-context)
+dest_server=$(kubectl config view --minify -o jsonpath='{.clusters[].cluster.server}')
+
+log "Install argo and app inventory to ${context} (${dest_server})?"
+read -p "y/n: (n) " yn
+case $yn in
+  [Yy]* ) ;;
+  * ) exit 1;;
+esac
+
+if ! kubectl get ns $NS &> /dev/null
+then
+  log "Creating argo namespace..."
+  kubectl create namespace $NS
+fi
+
+if [ -z "${SKIP_ARGO_INSTALL}" ]
+then
+  log "Applying argo resources..."
+  kubectl apply -n $NS -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+else
+  log "SKIP_ARGO_INSTALL is set, skipping..."
+fi
+
+log "Waiting for argo server pod to become ready..."
+kubectl wait --for=condition=ready pod -n argocd -l 'app.kubernetes.io/name=argocd-server'
+
+argo_user="${ARGO_USER}"
+if [ -z "${ARGO_USER}" ]
+then
+  log "ARGO_USER not specified, falling back to 'admin'"
+  argo_user="admin"
+fi
+
+argo_pass="${ARGO_PASS}"
+if [ -z "${ARGO_PASS}" ]
+then
+  log "ARGO_PASS not specified, falling back to value of 'argocd-initial-admin-secret'"
+  argo_pass=$(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
+fi
+
+log "Logging into argo..."
+argocd login \
+  --port-forward \
+  --port-forward-namespace argocd \
+  --username $argo_user \
+  --password $argo_pass
+
+log "Creating app inventory..."
+argocd app create inventory \
+  --dest-namespace $NS \
+  --dest-server $dest_server \
+  --repo $REPO \
+  --path inventory \
+  --port-forward \
+  --port-forward-namespace argocd
