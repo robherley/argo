@@ -19,7 +19,7 @@ metadata:
 spec:
   description: {{ $project }} Project
   sourceRepos:
-  - {{ .Values.repo }}
+  - {{ $.Values.repo }}
   destinations:
   - namespace: {{ $project }}
     server: https://kubernetes.default.svc
