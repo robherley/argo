@@ -11,9 +11,10 @@ metadata:
 spec:
   description: External charts
   sourceRepos:
-  - {{ $.Values.repo }}
+  - "*"
   destinations:
   - server: https://kubernetes.default.svc
+    namespace: "*"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
