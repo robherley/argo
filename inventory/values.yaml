@@ -3,7 +3,7 @@ inventory:
   media:
     - jellyfin
   utils:
+    - routes
     - sealed-secrets
-    - traefik
   webservers:
     - nginx
