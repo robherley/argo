@@ -14,6 +14,6 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - namespace: argocd
+  - namespace: {{ $project }}
     server: https://kubernetes.default.svc
 {{- end }}
