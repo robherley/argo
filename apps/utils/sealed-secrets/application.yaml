@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sealed-secrets-instance
-  namespace: argocd
+  namespace: sealed-secrets
 spec:
   project: utils
   source:
