@@ -13,7 +13,7 @@ metadata:
 spec:
   project: {{ $project }}
   source:
-    repoURL: git@github.com:robherley/argo.git
+    repoURL: https://github.com/robherley/argo.git
     targetRevision: HEAD
     path: {{ printf "apps/%s/%s" $project $app }}
     directory:
