@@ -4,5 +4,6 @@ inventory:
     - jellyfin
   utils:
     - sealed-secrets
+    - traefik
   webservers:
     - nginx
