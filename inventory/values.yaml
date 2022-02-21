@@ -1,0 +1,5 @@
+inventory:
+  webservers:
+    - nginx
+  otherwebservers:
+    - nginx2

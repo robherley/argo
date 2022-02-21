@@ -1,0 +1,17 @@
+{{- range $project, $_ := .Values.inventory }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ $project }}
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0" # this is default behavior
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: {{ $project }} Project
+  destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+{{- end }}
