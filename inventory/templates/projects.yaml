@@ -20,5 +20,7 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0" # this is default behavior
   name: {{ $project }}
 {{- end }}
