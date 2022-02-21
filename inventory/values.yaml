@@ -1,6 +1,4 @@
 repo: "https://github.com/robherley/argo.git"
 inventory:
-  utils:
-    - sealed-secrets
   webservers:
     - nginx

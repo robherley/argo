@@ -1,27 +1,23 @@
-{{- range $project, $apps := .Values.inventory }}
-  {{- range $_, $app := $apps }}
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ $app }}
+  name: charts
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: {{ $project }}
+  project: default
   source:
     repoURL: {{ $.Values.repo }}
     targetRevision: HEAD
-    path: {{ printf "apps/%s/%s" $project $app }}
+    path: charts
     directory:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: {{ $project }}
   syncPolicy:
     automated:
       prune: false
       selfHeal: true
-  {{- end }}
-{{- end }}
