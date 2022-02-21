@@ -2,6 +2,9 @@
 
 NS="argocd"
 REPO="https://github.com/robherley/argo.git"
+GH_APP_ID="173216"
+GH_APP_INSTALL_ID="23344746"
+GH_APP_PEM_PATH="reb-lab.pem"
 
 set -o pipefail
 
@@ -69,11 +72,19 @@ argocd login \
   --username $argo_user \
   --password $argo_pass
 
+log "Setting up repository..."
+argocd repo add $REPO \
+  --port-forward \
+  --port-forward-namespace argocd \
+  --github-app-id $GH_APP_ID \
+  --github-app-installation-id $GH_APP_INSTALL_ID \
+  --github-app-private-key-path $GH_APP_PEM_PATH
+
 log "Creating app inventory..."
 argocd app create inventory \
-  --dest-namespace $NS \
-  --dest-server $dest_server \
-  --repo $REPO \
-  --path inventory \
   --port-forward \
-  --port-forward-namespace argocd
+  --port-forward-namespace argocd \
+  --dest-namespace $NS \
+  --dest-server https://kubernetes.default.svc \
+  --repo $REPO \
+  --path inventory

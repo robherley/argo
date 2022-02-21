@@ -11,6 +11,8 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   description: {{ $project }} Project
+  sourceRepos:
+  - '*'
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
