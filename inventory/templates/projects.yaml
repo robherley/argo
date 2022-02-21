@@ -19,8 +19,12 @@ metadata:
 spec:
   description: {{ $project }} Project
   sourceRepos:
-  - {{ $.Values.repo }}
+  - "*"
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
   destinations:
-  - namespace: {{ $project }}
+  - namespace: "*"
     server: https://kubernetes.default.svc
 {{- end }}

@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets
+  name: sealed-secrets-instance
   namespace: argocd
 spec:
-  project: charts
+  project: utils
   source:
     chart: sealed-secrets
     repoURL: https://bitnami-labs.github.io/sealed-secrets
@@ -13,10 +13,8 @@ spec:
       releaseName: sealed-secrets
   destination:
     server: https://kubernetes.default.svc
-    namespace: sealed-secrets
+    namespace: utils
   syncPolicy:
     automated:
       prune: false
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
