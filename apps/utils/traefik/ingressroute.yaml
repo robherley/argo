@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: utils
+spec:
+  routes:
+  - kind: Rule
+    match: Host(`traefik.k8s.lab.reb.gg`)
+    services:
+    - kind: TraefikService
+      name: api@internal
