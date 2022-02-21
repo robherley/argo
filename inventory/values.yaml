@@ -2,5 +2,6 @@ repo: "https://github.com/robherley/argo.git"
 inventory:
   utils:
     - sealed-secrets
+    - traefik
   webservers:
     - nginx
