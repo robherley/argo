@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
+set -o pipefail
+
 NS="argocd"
 REPO="https://github.com/robherley/argo.git"
 GH_APP_ID="173216"
 GH_APP_INSTALL_ID="23344746"
 GH_APP_PEM_PATH="reb-lab.pem"
-
-set -o pipefail
 
 log() { echo -e "\033[0;36m$@\033[0m"; }
 
