@@ -12,6 +12,10 @@ spec:
   description: External charts
   sourceRepos:
   - "*"
+  clusterResourceWhitelist:
+  - "*"
+  namespaceResourceWhitelist:
+  - "*"
   destinations:
   - server: https://kubernetes.default.svc
     namespace: "*"
