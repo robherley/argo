@@ -6,6 +6,6 @@ inventory:
   utils:
     - argocd
     - sealed-secrets
-    - traefik
+    - traefik-ext
   webservers:
     - nginx
