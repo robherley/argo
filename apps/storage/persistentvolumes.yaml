@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media
+spec:
+  storageClassName: wolves-z.nfs
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: r720.lab.reb.gg
+    path: "/wolves-z/media"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: config
+spec:
+  storageClassName: wolves-z.nfs
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: r720.lab.reb.gg
+    path: "/wolves-z/config"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: downloads
+spec:
+  storageClassName: wolves-z.nfs
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: r720.lab.reb.gg
+    path: "/wolves-z/downloads"

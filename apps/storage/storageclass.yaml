@@ -1,0 +1,8 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: wolves-z.nfs
+provisioner: reb.gg/external-nfs
+parameters:
+  server: r720.lab.reb.gg
+  readOnly: "false"
