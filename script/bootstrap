@@ -13,6 +13,7 @@ log() { echo -e "\033[0;36m$@\033[0m"; }
 deps=(
   "kubectl"
   "argocd"
+  "kustomize"
 )
 
 for dep in ${deps[@]};
@@ -34,16 +35,16 @@ case $yn in
   * ) exit 1;;
 esac
 
-if ! kubectl get ns $NS &> /dev/null
-then
-  log "Creating argo namespace..."
-  kubectl create namespace $NS
-fi
-
 if [ -z "${SKIP_ARGO_INSTALL}" ]
 then
+  if ! kubectl get ns $NS &> /dev/null
+  then
+    log "Creating argo namespace..."
+    kubectl create namespace $NS
+  fi
+
   log "Applying argo resources..."
-  kubectl apply -n $NS -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  kustomize build install | kubectl apply -n $NS -f -
 else
   log "SKIP_ARGO_INSTALL is set, skipping..."
 fi
@@ -70,7 +71,9 @@ argocd login \
   --port-forward \
   --port-forward-namespace argocd \
   --username $argo_user \
-  --password $argo_pass
+  --password $argo_pass \
+  --insecure \
+  --plaintext
 
 log "Setting up repository..."
 argocd repo add $REPO \
@@ -78,7 +81,9 @@ argocd repo add $REPO \
   --port-forward-namespace argocd \
   --github-app-id $GH_APP_ID \
   --github-app-installation-id $GH_APP_INSTALL_ID \
-  --github-app-private-key-path $GH_APP_PEM_PATH
+  --github-app-private-key-path $GH_APP_PEM_PATH \
+  --insecure \
+  --plaintext
 
 log "Creating app inventory..."
 argocd app create inventory \
@@ -87,4 +92,6 @@ argocd app create inventory \
   --dest-namespace $NS \
   --dest-server https://kubernetes.default.svc \
   --repo $REPO \
-  --path inventory
+  --path inventory \
+  --insecure \
+  --plaintext

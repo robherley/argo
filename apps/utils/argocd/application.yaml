@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-instance
+  namespace: argocd
+spec:
+  project: utils
+  source:
+    repoURL: https://github.com/robherley/argo.git
+    targetRevision: HEAD
+    path: install
+    kustomize: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
