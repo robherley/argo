@@ -2,9 +2,7 @@ repo: "https://github.com/robherley/argo.git"
 inventory:
   media:
     - jellyfin
-  storage:
-    - persistentvolumes.yaml
-    - storageclass.yaml
+    - storage
   utils:
     - argocd
     - sealed-secrets
