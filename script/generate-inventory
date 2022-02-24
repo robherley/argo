@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 
+set -o pipefail
+
 APPS_PATH="apps/*"
 VALUES_FILE="inventory/values.yaml"
 
-set -o pipefail
-
-if ! command -v yq &> /dev/null
-then
+if ! command -v yq &> /dev/null; then
   echo "'yq' is required to run this script"
   exit 1
 fi
 
 yq -i 'del(.inventory)' $VALUES_FILE
 
-for dir in $APPS_PATH
-do
-  project=${dir##*/}
-  for sdir in $dir/*
-  do
-    app=${sdir##*/}
-    yq -i ".inventory.$project += [\"$app\"]" $VALUES_FILE
-  done
+for dir in $APPS_PATH; do
+  if [ -d "$dir" ]; then
+    project=${dir##*/}
+    for sdir in $dir/*; do
+      if [ -d "$sdir" ]; then
+        app=${sdir##*/}
+        yq -i ".inventory.$project += [\"$app\"]" $VALUES_FILE
+      fi
+    done
+  fi
 done
 
 yq '.inventory' $VALUES_FILE
