@@ -23,6 +23,9 @@ spec:
           media:
             enabled: true
             existingClaim: jellyfin-media
+          cache:
+            enabled: true
+            existingClaim: jellyfin-cache
   destination:
     server: https://kubernetes.default.svc
     namespace: media

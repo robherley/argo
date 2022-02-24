@@ -23,3 +23,15 @@ spec:
     requests:
       storage: 10Ti
   volumeName: jellyfin-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 16Gi
